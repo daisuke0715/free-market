@@ -33,4 +33,9 @@ export class ItemsController {
     };
     return this.itemsService.create(item);
   }
+
+  @Patch(':id')
+  updateStatus(@Param('id') id: string): Item {
+    return this.itemsService.updateStatus(id);
+  }
 }
