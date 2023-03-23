@@ -1,42 +1,49 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Item } from './item.model';
+import { Item } from '../entities/item.entity';
 import { ItemStatus } from './item-status.enum';
 import { CreateItemDto } from './dto/create-item.dto';
-import { v4 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ItemsService {
-  private items: Item[] = [];
+  constructor(
+    @InjectRepository(Item)
+    private readonly itemsRepository: Repository<Item>,
+  ) {}
 
-  findAll(): Item[] {
-    return this.items;
+  async findAll(): Promise<Item[]> {
+    return await this.itemsRepository.find();
   }
 
-  findById(id: string): Item {
-    const found = this.items.find((item) => item.id === id);
+  async findById(id: string): Promise<Item> {
+    const found = await this.itemsRepository.findOne({ where: { id: id } });
     if (!found) {
       throw new NotFoundException();
     }
     return found;
   }
 
-  create(createItemDto: CreateItemDto): Item {
-    const item: Item = {
-      id: uuid(),
+  async create(createItemDto: CreateItemDto): Promise<void> {
+    await this.itemsRepository.insert({
       ...createItemDto,
       status: ItemStatus.ON_SALE,
-    };
-    this.items.push(item);
-    return item;
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    return;
   }
 
-  updateStatus(id: string): Item {
-    const item = this.findById(id);
+  async updateStatus(id: string): Promise<Item> {
+    const item = await this.findById(id);
     item.status = ItemStatus.SOLD_OUT;
-    return item;
+    item.updatedAt = new Date().toISOString();
+    return await this.itemsRepository.save(item);
   }
 
-  delete(id: string): void {
-    this.items.filter((item) => item.id !== id);
+  async delete(id: string): Promise<void> {
+    const item = await this.findById(id);
+    await this.itemsRepository.delete(item);
   }
 }
