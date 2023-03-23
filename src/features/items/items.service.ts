@@ -24,15 +24,14 @@ export class ItemsService {
     return found;
   }
 
-  async create(createItemDto: CreateItemDto): Promise<void> {
-    await this.itemsRepository.insert({
+  async create(createItemDto: CreateItemDto): Promise<Item> {
+    const item = {
       ...createItemDto,
       status: ItemStatus.ON_SALE,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    });
-
-    return;
+    };
+    return await this.itemsRepository.save(item);
   }
 
   async updateStatus(id: string): Promise<Item> {
