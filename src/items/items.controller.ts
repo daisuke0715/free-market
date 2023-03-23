@@ -9,7 +9,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import { Item } from '../../entities/item.entity';
+import { Item } from '../entities/item.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 
 @Controller('items')
