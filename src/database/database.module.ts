@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 export const entitiesDir = 'dist/entities/*.entity.js';
-export const migrationsDir = 'dist/migrations/*.js';
+export const migrationsDir = 'dist/database/migrations/*.js';
 
 @Module({
   imports: [
