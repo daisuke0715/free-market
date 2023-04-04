@@ -8,7 +8,7 @@ import { ItemStatus } from './item-status.enum';
 import { CreateItemDto } from './dto/create-item.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/entities/user.entity';
+import { User } from '../../entities/user.entity';
 
 @Injectable()
 export class ItemsService {

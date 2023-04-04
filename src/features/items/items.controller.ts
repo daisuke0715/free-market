@@ -16,7 +16,7 @@ import { Item } from '../../entities/item.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../auth/decorator/get-user.decorator';
-import { User } from 'src/entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { UserStatus } from '../auth/user-status.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '../auth/decorator/role.decorator';
