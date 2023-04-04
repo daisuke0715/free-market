@@ -17,6 +17,9 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../auth/decorator/get-user.decorator';
 import { User } from 'src/entities/user.entity';
+import { UserStatus } from '../auth/user-status.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Role } from '../auth/decorator/role.decorator';
 
 @Controller('items')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -34,7 +37,8 @@ export class ItemsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Role(UserStatus.PREMIUM)
   async create(
     @Body() createItemDto: CreateItemDto,
     @GetUser() user: User,
